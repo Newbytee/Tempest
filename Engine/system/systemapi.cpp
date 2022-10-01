@@ -61,6 +61,29 @@ void SystemApi::takeOverlay(UiOverlay* ui) {
   dispatcher.takeOverlay(ui);
   }
 
+std::string SystemApi::getDataPathBase() {
+#ifdef __LINUX__
+  const char* xdgDataHome = std::getenv("XDG_DATA_HOME");
+  
+  if ( xdgDataHome == nullptr ) {
+    const char* home = std::getenv("HOME");
+    
+    if ( home == nullptr ) {
+      // This should never happen, just fall back to an empty string
+      return std::string();
+    } else {
+	  // Use default path if XDG_DATA_HOME is unset and HOME is set
+      return std::string(home) + "/.local/share/OpenGothic";
+    }
+  } else {
+    return std::string(xdgDataHome) + "/OpenGothic";
+  }
+#elif
+  // Should probably be replaced by implementations for other platforms at a later point
+  return std::string();
+#endif
+  }
+
 uint16_t SystemApi::translateKey(uint64_t scancode) {
   for(size_t i=0; i<m.keys.size(); ++i)
     if( m.keys[i].src==scancode )

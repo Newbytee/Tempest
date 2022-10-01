@@ -55,6 +55,8 @@ class SystemApi {
     static void     addOverlay (UiOverlay* ui);
     static void     takeOverlay(UiOverlay* ui);
 
+	static std::string  getDataPathBase();
+
   protected:
     struct AppCallBack {
       virtual ~AppCallBack()=default;
